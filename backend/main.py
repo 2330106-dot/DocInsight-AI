@@ -6,10 +6,12 @@ import textwrap
 
 app = FastAPI()
 
-# Enable CORS (VERY IMPORTANT for React)
+# ✅ Enable CORS for your Vercel frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://doc-insight-ai-orcin.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,7 +58,7 @@ def analyze_resume(text):
 
     score += len(found_keywords) * 5
 
-    # ✅ Updated condition (only if very few keywords)
+    # ✅ Updated condition
     if len(found_keywords) < 2:
         suggestions.append("Add more technical keywords (Python, SQL, React)")
 
@@ -78,7 +80,7 @@ def analyze_resume(text):
         suggestions.append("Add Education section")
         score -= 10
 
-    # ✅ Always give suggestions (IMPORTANT)
+    # ✅ Always give suggestions
     if not suggestions:
         suggestions.append("Great resume! Consider adding measurable achievements (e.g., increased efficiency by 20%).")
         suggestions.append("Use strong action verbs (Developed, Built, Optimized).")
@@ -102,7 +104,6 @@ async def analyze(file: UploadFile = File(...)):
     word_count = len(text.split())
     ai_output = improve_text(text)
 
-    # Resume analysis
     resume_analysis = analyze_resume(text)
 
     return {

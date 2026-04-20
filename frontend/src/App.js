@@ -25,14 +25,10 @@ function App() {
     try {
       setLoading(true);
 
+      // ✅ FIXED REQUEST (no headers)
       const res = await axios.post(
-        "http://127.0.0.1:8000/analyze",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        "https://docinsight-backend.onrender.com/analyze",
+        formData
       );
 
       setResult(res.data);
